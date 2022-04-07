@@ -1,18 +1,28 @@
 package config
 
 import (
-	"github.com/jinzhu/gorm"
-	// nts why _ ?
-	_ "github.com/jinzhu/gorm/dialects/mysql"
+	"log"
+
+	"os"
+
+	"github.com/joho/godotenv"
+	"gorm.io/driver/postgres"
+	"gorm.io/gorm"
 )
 
-var (
-	db *gorm.DB
-)
+var db *gorm.DB
 
 func Connect() {
+	// load .env file from given path
+	// we keep it empty it will load .env from current directory
+	err := godotenv.Load("../../.env")
+
+	if err != nil {
+		log.Fatalf("Error loading .env file")
+	}
+	DB_URI := os.Getenv("POSTGRES_URL")
 	// NTS replace second param with sql connection
-	d, err := gorm.Open("mysql", "akhil:Axlesharma@12@/simplerest?charset=utf8&parseTime=True*loc=Local")
+	d, err := gorm.Open(postgres.Open(DB_URI), &gorm.Config{})
 	if err != nil {
 		panic(err)
 	}

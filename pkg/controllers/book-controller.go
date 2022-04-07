@@ -3,10 +3,11 @@ package controllers
 import (
 	"encoding/json"
 	"fmt"
+	"go-books/pkg/models"
+	"go-books/pkg/utils"
 	"net/http"
 	"strconv"
-	"github.com/albachteng/go-books/pkg/models"
-	"github.com/albachteng/go-books/pkg/utils"
+
 	"github.com/gorilla/mux"
 )
 
@@ -37,7 +38,7 @@ func GetBookById(w http.ResponseWriter, r *http.Request) {
 	bookDetails, _ := models.GetBookById(ID)
 	// parse the document into JSON
 	response, _ := json.Marshal(bookDetails)
-	// send it all back 
+	// send it all back
 	w.Header().Set("Content-Type", "pkglication/json")
 	w.WriteHeader(http.StatusOK)
 	w.Write(response)
@@ -46,9 +47,9 @@ func GetBookById(w http.ResponseWriter, r *http.Request) {
 func CreateBook(w http.ResponseWriter, r *http.Request) {
 	// create a book type that is empty for now
 	CreateBook := &models.Book{}
-	// parse the request body 
+	// parse the request body onto the empty book type we just declared
 	utils.ParseBody(r, CreateBook)
-	// 
+	// ?
 	b := CreateBook.CreateBook()
 	response, _ := json.Marshal(b)
 	w.WriteHeader(http.StatusOK)
